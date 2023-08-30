@@ -6,6 +6,6 @@ app = FastAPI(
 )
 
 
-@app.get('/')
+@app.get('/', response_model=list[str])
 def hello():
-    return "Hello, world"
+    return ["Hello, world"]

@@ -9,6 +9,9 @@ packages = [{include = "fastapi_examples"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = {extras = ["all"], version = "^0.103.0"}
+sqlalchemy = "^2.0.20"
+alembic = "^1.11.3"
+psycopg2 = "^2.9.7"
 
 
 [build-system]
