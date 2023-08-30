@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "fastapi-examples"
+version = "0.1.0"
+description = ""
+authors = ["andrymyzik <andrymyzik@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fastapi_examples"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.103.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
