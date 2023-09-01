@@ -1,11 +1,11 @@
 import uvicorn
 
-from app.config import DEBUG
+from src.config import DEBUG
 
 
 if __name__ == '__main__':
     uvicorn.run(
-        "app.main:app",
+        "src.main:app",
         host="0.0.0.0",
         port=8000,
         log_level="info",
