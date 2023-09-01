@@ -5,14 +5,14 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config import (
+from app.config import (
     DB_HOST,
     DB_NAME,
     DB_USER,
     DB_PASS,
     DB_PORT,
 )
-from models.models import metadata
+from app.models.models import metadata
 
 
 # this is the Alembic Config object, which provides
