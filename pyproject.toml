@@ -12,6 +12,7 @@ sqlalchemy = "^2.0.20"
 alembic = "^1.11.3"
 asyncpg = "^0.28.0"
 fastapi-users = {extras = ["sqlalchemy"], version = "^12.1.2"}
+gunicorn = "^21.2.0"
 
 
 [build-system]

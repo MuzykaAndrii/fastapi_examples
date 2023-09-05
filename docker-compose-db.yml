@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      interval: 20s
+      timeout: 60s
+      retries: 5
+      start_period: 80s  
+    volumes:
+      - local_pgdata-only-db:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "5050:80"
+    env_file:
+      - .env
+    volumes:
+      - pgadmin-data-only-db:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  local_pgdata-only-db:
+  pgadmin-data-only-db:

@@ -15,14 +15,18 @@ RUN $POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
 
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
-WORKDIR .
+WORKDIR ./backend
 
 COPY poetry.lock pyproject.toml .
 COPY . ./
 
 RUN poetry config virtualenvs.create false
-RUN poetry install --no-interaction  --no-cache
+RUN poetry install --no-interaction
 
-CMD ["poetry", "run", "python3", "./run.py"]
+RUN chmod a+x docker/*.sh
 
-EXPOSE 8000
+# CMD poetry run alembic upgrade head
+
+# WORKDIR src
+
+# CMD poetry run gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000

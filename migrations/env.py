@@ -6,6 +6,8 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
+sys.path.append(os.path.join(sys.path[0], 'src'))
+
 from src.config import (
     DB_HOST,
     DB_NAME,
@@ -17,7 +19,6 @@ from src.auth.models import metadata as auth_meta
 from src.operations.models import metadata as operations_meta
 
 
-sys.path.append(os.path.join(sys.path[0], 'src'))
 
 
 # this is the Alembic Config object, which provides
