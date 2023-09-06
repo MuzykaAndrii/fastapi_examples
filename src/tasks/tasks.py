@@ -11,6 +11,9 @@ from config import (
     REDIS_PORT,
 )
 
+# celery -A tasks.tasks:celery worker --loglevel=INFO
+# celery -A tasks.tasks:celery flower --loglevel=INFO
+
 
 celery = Celery('tasks', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}')
 
