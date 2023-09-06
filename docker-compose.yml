@@ -10,7 +10,7 @@ services:
       - .env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
-      interval: 20s
+      interval: 5s
       timeout: 60s
       retries: 5
       start_period: 80s  
@@ -35,10 +35,13 @@ services:
     container_name: backend
     command: ["docker/app.sh"]
     restart: always
+    working_dir: /backend
     ports: 
       - 8000:8000
     links:
       - db
+    volumes:
+      - ./src:/backend/src
     depends_on:
       db:
         condition: service_healthy

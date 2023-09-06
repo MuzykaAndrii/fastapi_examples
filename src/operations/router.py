@@ -18,7 +18,7 @@ router = APIRouter(
 async def get_specific_operations(operation_type: str, session: AsyncSession = Depends(get_async_session)) -> list[OperationRead]:
     query = select(operation).where(operation.c.type == operation_type)
     result = await session.execute(query)
-    return list(result.all())
+    return result.all()
 
 
 @router.post("/")
