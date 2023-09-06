@@ -1,6 +1,5 @@
 from datetime import datetime
-from decimal import Decimal
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class OperationCreate(BaseModel):
@@ -11,7 +10,7 @@ class OperationCreate(BaseModel):
     type: str
 
 
-class OperationRead(BaseModel):
+class OperationRead(BaseModel):    
     id: int
     quantity: str
     figi: str

@@ -3,6 +3,8 @@ from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
+from fastapi_cache.decorator import cache
+
 from database import get_async_session
 from operations.models import operation
 from operations.schemas import OperationCreate, OperationRead
@@ -14,11 +16,17 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-async def get_specific_operations(operation_type: str, session: AsyncSession = Depends(get_async_session)) -> list[OperationRead]:
+@router.get("/", response_model=list[OperationRead])
+@cache(expire=60)
+async def get_specific_operations(
+    operation_type: str,
+    session: AsyncSession = Depends(get_async_session),
+) -> list[OperationRead]:
+    
     query = select(operation).where(operation.c.type == operation_type)
     result = await session.execute(query)
-    return result.all()
+    return result.mappings().all()
+
 
 
 @router.post("/")

@@ -30,6 +30,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  
+  redis:
+    image: redis
+    container_name: redis_container
+    command: --port 5370
+    ports:
+      - 5370:5370
 
 volumes:
   local_pgdata-only-db:
