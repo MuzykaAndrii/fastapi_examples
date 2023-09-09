@@ -19,6 +19,14 @@ celery = "^5.3.4"
 flower = "^2.0.1"
 
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.1"
+pytest-asyncio = "^0.21.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+asyncio_mode = "auto"
