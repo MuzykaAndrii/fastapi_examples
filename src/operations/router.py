@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi_cache.decorator import cache
 
 from database import get_async_session
-from operations.models import operation
+from operations.models import Operation
 from operations.schemas import OperationCreate, OperationRead
 
 
@@ -23,7 +23,7 @@ async def get_specific_operations(
     session: AsyncSession = Depends(get_async_session),
 ) -> list[OperationRead]:
     
-    query = select(operation).where(operation.c.type == operation_type)
+    query = select(Operation).where(Operation.type == operation_type)
     result = await session.execute(query)
     return result.mappings().all()
 
@@ -35,7 +35,7 @@ async def add_specific_operation(
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        q = insert(operation).values(new_operation.model_dump())
+        q = insert(Operation).values(new_operation.model_dump())
 
         res = await session.execute(q)
         await session.commit()

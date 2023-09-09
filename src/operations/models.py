@@ -1,15 +1,16 @@
-from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, MetaData
+from sqlalchemy import Column, Integer, String, TIMESTAMP
+from sqlalchemy.ext.declarative import declarative_base
 
-from database import metadata
+
+Base = declarative_base()
 
 
-operation = Table(
-    "operation",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("quantity", String),
-    Column("figi", String),
-    Column("instrument_type", String, nullable=True),
-    Column("date", TIMESTAMP),
-    Column("type", String),
-)
+class Operation(Base):
+    __tablename__ = "operations"
+
+    id = Column(Integer, primary_key=True)
+    quantity = Column(String)
+    figi = Column(String)
+    instrument_type = Column(String, nullable=True)
+    date = Column(TIMESTAMP)
+    type = Column(String)
