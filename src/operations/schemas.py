@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class OperationCreate(BaseModel):
@@ -17,3 +17,6 @@ class OperationRead(BaseModel):
     instrument_type: str
     date: datetime
     type: str
+
+    class Config:
+        orm_mode = True

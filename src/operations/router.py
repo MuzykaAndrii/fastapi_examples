@@ -25,7 +25,7 @@ async def get_specific_operations(
     
     query = select(Operation).where(Operation.type == operation_type)
     result = await session.execute(query)
-    return result.mappings().all()
+    return result.scalars().all()
 
 
 
@@ -35,9 +35,10 @@ async def add_specific_operation(
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        q = insert(Operation).values(new_operation.model_dump())
+        stmt = insert(Operation).values(new_operation.model_dump())
 
-        res = await session.execute(q)
+        res = await session.execute(stmt)
+        print(res.inserted_primary_key)
         await session.commit()
 
     except IntegrityError:
@@ -54,12 +55,12 @@ async def add_specific_operation(
         })
     else:
         # inserted_id = res.inserted_primary_key[0]
-        # created_operation_q = select(operation).where(operation.c.id == inserted_id)
+        # created_operation_q = select(Operation).where(Operation.id == inserted_id)
         # created_operation = await session.execute(created_operation_q)
 
         return {
             "status": "success",
-            # "data": OperationRead(**created_operation.all()),
+            # "data": OperationRead.model_dump(created_operation.first()),
             "data": None,
             "detail": None,
         }

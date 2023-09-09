@@ -52,11 +52,3 @@ app.include_router(router_tasks)
 @app.get("/protected-route")
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.username}"
-
-@app.get("/base")
-async def get_base():
-    from database import Base
-    metas = [sub.metadata for sub in Base.__subclasses__()]
-    print(metas)
-    
-    return ''
