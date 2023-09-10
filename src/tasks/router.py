@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from auth.initialization import current_user
+from auth.auth import current_user
 from tasks.tasks import send_letter
 from config import SMTP_USER
 
