@@ -27,7 +27,7 @@ class Role(Base):
 class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = "users"
 
-    # Base user sqlalchemy fields 
+    # Base fastapi-users model fields
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
     hashed_password: str = Column(String(length=1024), nullable=False)

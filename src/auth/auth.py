@@ -1,6 +1,6 @@
 from typing import Optional
 from jwt import decode
-from fastapi import Request
+from fastapi import HTTPException, Request
 from fastapi.responses import RedirectResponse
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
@@ -10,10 +10,9 @@ from auth.dal import UserDAL
 
 from auth.manager import get_user_manager
 from auth.models import User
-from config import AUTH_SECRET, DEBUG
+from auth.services import get_user_by_jwt, user_is_admin
+from config import AUTH_SECRET, DEBUG, TOKEN_AUDIENCE
 
-
-TOKEN_AUDIENCE = 'auth'
 
 cookie_transport = CookieTransport(
     cookie_name="bonds",
@@ -38,17 +37,6 @@ fastapi_users = FastAPIUsers[User, int](
 )
 
 
-def get_user_id_by_jwt(token: str) -> Optional[int]:
-    jwt_data = decode(
-        jwt=token,
-        key=AUTH_SECRET,
-        algorithms=['HS256'],
-        audience=TOKEN_AUDIENCE,
-    )
-    user_id = jwt_data.get('sub')
-    return user_id
-
-
 class AdminAuth(AuthenticationBackendSQLAdmin):
     async def login(self, request: Request) -> bool:
         form = await request.form()
@@ -71,10 +59,10 @@ class AdminAuth(AuthenticationBackendSQLAdmin):
         if not token:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
         
-        user_id = get_user_id_by_jwt(token)
-        # user = await UserDAL.get_by_id(user_id)
+        user = await get_user_by_jwt(token)
 
-        # print(user)
+        if not user_is_admin(user):
+            raise HTTPException(403)
 
 
 
