@@ -9,8 +9,8 @@ from config import (
     TOKEN_AUDIENCE,
     AUTH_SECRET,
 )
-from auth.dal import UserDAL
-from auth.models import User
+from users.dal import UserDAL
+from users.models import User
 
 from fastapi import HTTPException
 from typing import Optional

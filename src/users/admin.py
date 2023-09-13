@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from auth.models import (
+from users.models import (
     Role,
     User,
 )

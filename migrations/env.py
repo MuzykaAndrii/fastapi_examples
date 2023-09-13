@@ -15,7 +15,7 @@ from src.config import (
     DB_PASS,
     DB_PORT,
 )
-from auth.models import Base as AuthBase
+from users.models import Base as AuthBase
 from operations.models import Base as OperationBase
 
 

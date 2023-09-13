@@ -7,7 +7,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from sqladmin import Admin
-from auth.admin import (
+from users.admin import (
     RoleAdmin,
     UserAdmin,
 )
@@ -18,14 +18,14 @@ from config import (
     REDIS_PORT,
 )
 from database import engine
-from auth.models import User
+from users.models import User
 from auth.auth import (
     AdminAuth,
     auth_backend,
     fastapi_users,
     current_user,
 )
-from auth.schemas import (
+from users.schemas import (
     UserRead,
     UserCreate,
 )

@@ -13,8 +13,8 @@ from sqladmin.authentication import (
 )
 
 from auth.manager import get_user_manager
-from auth.models import User
-from auth.services import (
+from users.models import User
+from users.services import (
     get_user_by_jwt,
     user_is_admin,
 )

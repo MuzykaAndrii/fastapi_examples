@@ -2,7 +2,7 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from auth.models import (
+from users.models import (
     Role,
     User,
 )
