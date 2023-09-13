@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_cache import FastAPICache
@@ -18,16 +18,8 @@ from config import (
     REDIS_PORT,
 )
 from database import engine
-from users.models import User
 from auth.auth import (
     AdminAuth,
-    auth_backend,
-    fastapi_users,
-    current_user,
-)
-from users.schemas import (
-    UserRead,
-    UserCreate,
 )
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
@@ -64,37 +56,14 @@ app.add_middleware(
     ],
 )
 
-authentication_backend = AdminAuth(secret_key=AUTH_SECRET)
-admin = Admin(app=app, authentication_backend=authentication_backend, engine=engine)
+admin = Admin(
+    app=app,
+    authentication_backend=AdminAuth(secret_key=AUTH_SECRET),
+    engine=engine,
+)
 
 admin.add_view(UserAdmin)
 admin.add_view(RoleAdmin)
 
-
-# deprecated
-# @app.on_event("startup")
-# async def startup():
-#     redis = aioredis.from_url(f"redis://{REDIS_HOST}{REDIS_PORT}")
-#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
-
-
-app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth/jwt",
-    tags=["Auth"],
-)
-
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth/jwt",
-    tags=["Auth"],
-)
-
 app.include_router(router_operation)
-
 app.include_router(router_tasks)
-
-
-@app.get("/protected-route")
-def protected_route(user: User = Depends(current_user)):
-    return f"Hello, {user.username}"

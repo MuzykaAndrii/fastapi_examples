@@ -11,7 +11,6 @@ fastapi = {extras = ["all"], version = "^0.103.0"}
 sqlalchemy = "^2.0.20"
 alembic = "^1.11.3"
 asyncpg = "^0.28.0"
-fastapi-users = {extras = ["sqlalchemy"], version = "^12.1.2"}
 gunicorn = "^21.2.0"
 fastapi-cache2 = "^0.2.1"
 redis = "^5.0.0"
