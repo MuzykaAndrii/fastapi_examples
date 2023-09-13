@@ -6,11 +6,12 @@ from config import SMTP_USER
 
 
 router = APIRouter(
-    prefix='/send',
-    tags=['Mailing'],
+    prefix="/send",
+    tags=["Mailing"],
 )
 
-@router.get('/simple')
+
+@router.get("/simple")
 def send_simple_email(user=Depends(current_user)):
     send_letter.delay(SMTP_USER, f"Hello, world! <br> P.s. from {user.username}")
     return {

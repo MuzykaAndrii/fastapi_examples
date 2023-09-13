@@ -5,13 +5,28 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from sqladmin import Admin
-from auth.admin import RoleAdmin, UserAdmin
+from auth.admin import (
+    RoleAdmin,
+    UserAdmin,
+)
 
-from config import AUTH_SECRET, REDIS_HOST, REDIS_PORT
+from config import (
+    AUTH_SECRET,
+    REDIS_HOST,
+    REDIS_PORT,
+)
 from database import engine
 from auth.models import User
-from auth.auth import AdminAuth, auth_backend, fastapi_users, current_user
-from auth.schemas import UserRead, UserCreate
+from auth.auth import (
+    AdminAuth,
+    auth_backend,
+    fastapi_users,
+    current_user,
+)
+from auth.schemas import (
+    UserRead,
+    UserCreate,
+)
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 
@@ -26,14 +41,7 @@ app.add_middleware(
         "http://localhost:8000",
     ],
     allow_credentials=True,
-    allow_methods=[
-        "GET",
-        "POST",
-        "OPTIONS",
-        "DELETE",
-        "PATCH",
-        "PUT"
-    ],
+    allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
     allow_headers=[
         "Content-Type",
         "Set-Cookie",

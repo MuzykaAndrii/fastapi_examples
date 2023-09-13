@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEBUG = bool(int(getenv('DEBUG')))
+DEBUG = bool(int(getenv("DEBUG")))
 
 DB_HOST = getenv("DB_HOST")
 DB_PORT = getenv("DB_PORT")

@@ -3,26 +3,41 @@ from jwt import decode
 from fastapi import HTTPException, Request
 from fastapi.responses import RedirectResponse
 from fastapi_users import FastAPIUsers
-from fastapi_users.authentication import CookieTransport, AuthenticationBackend
+from fastapi_users.authentication import (
+    CookieTransport,
+    AuthenticationBackend,
+)
 from fastapi_users.authentication import JWTStrategy
-from sqladmin.authentication import AuthenticationBackend as AuthenticationBackendSQLAdmin
+from sqladmin.authentication import (
+    AuthenticationBackend as AuthenticationBackendSQLAdmin,
+)
 
 from auth.manager import get_user_manager
 from auth.models import User
-from auth.services import get_user_by_jwt, user_is_admin
-from config import AUTH_SECRET, DEBUG, TOKEN_AUDIENCE
+from auth.services import (
+    get_user_by_jwt,
+    user_is_admin,
+)
+from config import (
+    AUTH_SECRET,
+    DEBUG,
+    TOKEN_AUDIENCE,
+)
 
 
 cookie_transport = CookieTransport(
     cookie_name="bonds",
     cookie_max_age=3600,
     cookie_secure=not DEBUG,
-    cookie_samesite='lax',
+    cookie_samesite="lax",
 )
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=AUTH_SECRET, lifetime_seconds=3600, token_audience=[TOKEN_AUDIENCE])
+    return JWTStrategy(
+        secret=AUTH_SECRET, lifetime_seconds=3600, token_audience=[TOKEN_AUDIENCE]
+    )
+
 
 auth_backend = AuthenticationBackend(
     name="jwt",
@@ -58,13 +73,11 @@ class AdminAuth(AuthenticationBackendSQLAdmin):
 
         if not token:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
-        
+
         user = await get_user_by_jwt(token)
 
         if not user_is_admin(user):
             raise HTTPException(403)
-
-
 
 
 current_user = fastapi_users.current_user()

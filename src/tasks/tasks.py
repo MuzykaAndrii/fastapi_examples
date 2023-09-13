@@ -15,15 +15,16 @@ from config import (
 # celery -A tasks.tasks:celery flower --loglevel=INFO
 
 
-celery = Celery('tasks', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}')
+celery = Celery("tasks", broker=f"redis://{REDIS_HOST}:{REDIS_PORT}")
+
 
 def create_email_letter(recipient: str, content: str):
     letter = EmailMessage()
 
-    letter['subject'] = "Some subject"
-    letter['From'] = SMTP_USER
-    letter['To'] = recipient
-    letter.set_content(content, subtype='html')
+    letter["subject"] = "Some subject"
+    letter["From"] = SMTP_USER
+    letter["To"] = recipient
+    letter.set_content(content, subtype="html")
 
     return letter
 

@@ -1,6 +1,9 @@
 from sqladmin import ModelView
 
-from auth.models import Role, User
+from auth.models import (
+    Role,
+    User,
+)
 
 
 class UserAdmin(ModelView, model=User):
@@ -17,4 +20,4 @@ class RoleAdmin(ModelView, model=Role):
     name = "Role"
     name_plural = "Roles"
 
-    column_list = ['id', 'name', 'permissions']
+    column_list = ["id", "name", "permissions"]

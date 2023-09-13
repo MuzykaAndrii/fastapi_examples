@@ -6,7 +6,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
-sys.path.append(os.path.join(sys.path[0], 'src'))
+sys.path.append(os.path.join(sys.path[0], "src"))
 
 from src.config import (
     DB_HOST,
@@ -17,7 +17,6 @@ from src.config import (
 )
 from auth.models import Base as AuthBase
 from operations.models import Base as OperationBase
-
 
 
 # this is the Alembic Config object, which provides
@@ -88,9 +87,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

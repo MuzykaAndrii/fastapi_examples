@@ -7,7 +7,10 @@ from fastapi_cache.decorator import cache
 
 from database import get_async_session
 from operations.models import Operation
-from operations.schemas import OperationCreate, OperationRead
+from operations.schemas import (
+    OperationCreate,
+    OperationRead,
+)
 
 
 router = APIRouter(
@@ -22,11 +25,9 @@ async def get_specific_operations(
     operation_type: str,
     session: AsyncSession = Depends(get_async_session),
 ) -> list[OperationRead]:
-    
     query = select(Operation).where(Operation.type == operation_type)
     result = await session.execute(query)
     return result.scalars().all()
-
 
 
 @router.post("/")
@@ -42,17 +43,23 @@ async def add_specific_operation(
         await session.commit()
 
     except IntegrityError:
-        raise HTTPException(400, detail={
-            "status": "failed",
-            "data": None,
-            "detail": "Object already exists",
-        })
+        raise HTTPException(
+            400,
+            detail={
+                "status": "failed",
+                "data": None,
+                "detail": "Object already exists",
+            },
+        )
     except Exception:
-        raise HTTPException(500, detail={
-            "status": "failed",
-            "data": None,
-            "detail": "Internal server error, contact support",
-        })
+        raise HTTPException(
+            500,
+            detail={
+                "status": "failed",
+                "data": None,
+                "detail": "Internal server error, contact support",
+            },
+        )
     else:
         # inserted_id = res.inserted_primary_key[0]
         # created_operation_q = select(Operation).where(Operation.id == inserted_id)
@@ -64,6 +71,3 @@ async def add_specific_operation(
             "data": None,
             "detail": None,
         }
-
-
-    
