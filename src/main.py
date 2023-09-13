@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -31,8 +33,19 @@ from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # on startup
+    redis = aioredis.from_url(f"redis://{REDIS_HOST}{REDIS_PORT}")
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+    yield
+    # on shutdown
+
+
 app = FastAPI(
     title="Learning app",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -58,10 +71,11 @@ admin.add_view(UserAdmin)
 admin.add_view(RoleAdmin)
 
 
-@app.on_event("startup")
-async def startup():
-    redis = aioredis.from_url(f"redis://{REDIS_HOST}{REDIS_PORT}")
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+# deprecated
+# @app.on_event("startup")
+# async def startup():
+#     redis = aioredis.from_url(f"redis://{REDIS_HOST}{REDIS_PORT}")
+#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 
 app.include_router(

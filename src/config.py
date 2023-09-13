@@ -3,6 +3,9 @@ from os import getenv
 from dotenv import load_dotenv
 
 
+# TODO: rebuild config file to pydantic_settings style
+
+
 load_dotenv()
 
 DEBUG = bool(int(getenv("DEBUG")))
