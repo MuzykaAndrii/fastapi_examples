@@ -1,7 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import insert, select
+from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import (
+    IntegrityError,
+    NoResultFound,
+)
 
 from fastapi_cache.decorator import cache
 
@@ -19,9 +22,55 @@ router = APIRouter(
 )
 
 
+@router.get("/{operation_id}/")
+async def get_operation(
+    operation_id: int,
+    session: AsyncSession = Depends(get_async_session),
+) -> OperationRead | None:
+    return await session.get(Operation, operation_id)
+
+
+@router.delete("/{operation_id}/")
+async def delete_operation(
+    operation_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    try:
+        stmt = (
+            delete(Operation).where(Operation.id == operation_id).returning(Operation)
+        )
+        result = await session.execute(stmt)
+
+        await session.commit()
+    except NoResultFound:
+        raise HTTPException(
+            404,
+            detail={
+                "status": "failed",
+                "data": None,
+                "detail": "Record not found",
+            },
+        )
+    except Exception:
+        raise HTTPException(
+            500,
+            detail={
+                "result": "failed",
+                "data": None,
+                "detail": "Internal error",
+            },
+        )
+    else:
+        return {
+            "status": "success",
+            "data": result.scalar_one(),
+            "detail": "Record successfully deleted",
+        }
+
+
 @router.get("/", response_model=list[OperationRead])
 @cache(expire=60)
-async def get_specific_operations(
+async def get_operations_by_type(
     operation_type: str,
     session: AsyncSession = Depends(get_async_session),
 ) -> list[OperationRead]:
@@ -30,17 +79,24 @@ async def get_specific_operations(
     return result.scalars().all()
 
 
-@router.post("/")
-async def add_specific_operation(
+@router.post("/", status_code=201)
+async def add_operation(
     new_operation: OperationCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        stmt = insert(Operation).values(new_operation.model_dump())
+        # stmt = insert(Operation).values(new_operation.model_dump())
 
-        res = await session.execute(stmt)
-        print(res.inserted_primary_key)
+        # res = await session.execute(stmt)
+        # print(res.inserted_primary_key)
+        # await session.commit()
+
+        operation = Operation(**new_operation.model_dump())
+        session.add(operation)
         await session.commit()
+
+        # refresh obj to get actual data (useful if on db-side received data changes)
+        await session.refresh(operation)
 
     except IntegrityError:
         raise HTTPException(
@@ -61,13 +117,8 @@ async def add_specific_operation(
             },
         )
     else:
-        # inserted_id = res.inserted_primary_key[0]
-        # created_operation_q = select(Operation).where(Operation.id == inserted_id)
-        # created_operation = await session.execute(created_operation_q)
-
         return {
             "status": "success",
-            # "data": OperationRead.model_dump(created_operation.first()),
-            "data": None,
+            "data": operation,
             "detail": None,
         }
