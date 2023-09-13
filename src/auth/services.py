@@ -34,7 +34,7 @@ async def get_user_by_jwt(token: str) -> Optional[User]:
 
 def get_user_id_by_jwt(token: str) -> Optional[int]:
     try:
-        jwt_data = jwt.decode(
+        jwt_data = decode(
             token,
             key=AUTH_SECRET,
             algorithms=['HS256'],

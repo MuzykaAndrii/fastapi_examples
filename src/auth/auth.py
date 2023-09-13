@@ -6,7 +6,6 @@ from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
 from fastapi_users.authentication import JWTStrategy
 from sqladmin.authentication import AuthenticationBackend as AuthenticationBackendSQLAdmin
-from auth.dal import UserDAL
 
 from auth.manager import get_user_manager
 from auth.models import User
@@ -50,8 +49,9 @@ class AdminAuth(AuthenticationBackendSQLAdmin):
 
     async def logout(self, request: Request) -> bool:
         # Usually you'd want to just clear the session
-        request.session.clear()
-        return True
+        response = RedirectResponse(request.url_for("admin:login"), status_code=302)
+        response.delete_cookie(key="bonds")
+        return response
 
     async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
         token = request.cookies.get("bonds")
