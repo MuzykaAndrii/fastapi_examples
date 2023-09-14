@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import (
     Column,
@@ -24,7 +23,7 @@ class Role(Base):
     permissions = Column(JSON)
 
 
-class User(SQLAlchemyBaseUserTable[int], Base):
+class User(Base):
     __tablename__ = "users"
 
     # Base fastapi-users model fields

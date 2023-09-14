@@ -4,10 +4,6 @@ from fastapi.responses import RedirectResponse
 
 from sqladmin.authentication import AuthenticationBackend
 
-from users.services import (
-    get_user_by_jwt,
-    user_is_admin,
-)
 from config import (
     AUTH_SECRET,
     DEBUG,
@@ -27,18 +23,16 @@ class AdminAuth(AuthenticationBackend):
         return True
 
     async def logout(self, request: Request) -> bool:
-        # Usually you'd want to just clear the session
-        response = RedirectResponse(request.url_for("admin:login"), status_code=302)
-        response.delete_cookie(key="bonds")
-        return response
+        pass
 
     async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
-        token = request.cookies.get("bonds")
+        # token = request.cookies.get("bonds")
 
-        if not token:
-            return RedirectResponse(request.url_for("admin:login"), status_code=302)
+        # if not token:
+        #     return RedirectResponse(request.url_for("admin:login"), status_code=302)
 
-        user = await get_user_by_jwt(token)
+        # user = await get_user_by_jwt(token)
 
-        if not user_is_admin(user):
-            raise HTTPException(403)
+        # if not user_is_admin(user):
+        #     raise HTTPException(403)
+        pass

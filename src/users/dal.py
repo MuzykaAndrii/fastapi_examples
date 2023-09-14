@@ -11,10 +11,16 @@ from database import async_session_maker
 
 class UserDAL:
     @staticmethod
-    async def get_by_id(id: int) -> Optional[User]:
+    async def create_user():
+        pass
+
+    @staticmethod
+    async def get_by_id(user_id: int) -> User | None:
         async with async_session_maker() as session:
-            q = select(User).where(User.id == id)
-            result = await session.execute(q)
+            # q = select(User).where(User.id == id)
+            # result = await session.execute(q)
+
+            result = await session.get(User, user_id)
 
             if result:
                 return result.scalar_one()
