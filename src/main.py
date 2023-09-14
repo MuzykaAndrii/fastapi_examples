@@ -18,11 +18,12 @@ from config import (
     REDIS_PORT,
 )
 from database import engine
-from auth.auth import (
+from users.auth import (
     AdminAuth,
 )
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
+from users.router import router as router_auth
 
 
 @asynccontextmanager
@@ -67,3 +68,4 @@ admin.add_view(RoleAdmin)
 
 app.include_router(router_operation)
 app.include_router(router_tasks)
+app.include_router(router_auth)

@@ -2,11 +2,14 @@ from typing import Optional
 
 from pydantic import (
     BaseModel,
+    ConfigDict,
     EmailStr,
 )
 
 
 class UserRead(BaseModel):
+    model_config: ConfigDict(from_attributes=True)
+
     id: int
     email: EmailStr
     username: str
@@ -14,9 +17,6 @@ class UserRead(BaseModel):
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
-
-    class Config:
-        from_attributes = True
 
 
 class UserCreate(BaseModel):

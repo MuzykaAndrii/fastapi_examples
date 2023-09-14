@@ -2,13 +2,19 @@ from typing import Optional
 from fastapi import HTTPException, Request
 from fastapi.responses import RedirectResponse
 
+from passlib.context import CryptContext
 from sqladmin.authentication import AuthenticationBackend
 
-from config import (
-    AUTH_SECRET,
-    DEBUG,
-    TOKEN_AUDIENCE,
-)
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+def verify_password(raw_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(raw_password, hashed_password)
 
 
 class AdminAuth(AuthenticationBackend):
