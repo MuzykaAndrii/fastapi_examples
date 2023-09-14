@@ -37,3 +37,8 @@ class UserCreate(BaseModel):
         if "password" in values and value != values["password"]:
             raise ValueError("Passwords do not match")
         return value
+
+
+class UserLogin(BaseModel):
+    username_or_email: str
+    password: str

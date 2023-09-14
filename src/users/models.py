@@ -27,8 +27,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False)
-    username = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
+    username = Column(String, nullable=False, unique=True)
     hashed_password: str = Column(String(length=1024), nullable=False)
     registered_at = Column(TIMESTAMP, default=datetime.utcnow)
     role_id = Column(Integer, ForeignKey("roles.id"), default=1)
