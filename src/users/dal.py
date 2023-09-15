@@ -19,6 +19,7 @@ class UserDAL(BaseDAL):
 
     @classmethod
     async def check_email_or_username_existence(cls, email: str, username: str):
+        # TODO: refactor to execute one query
         email_existence = await super().exists_by(email=email)
         username_existence = await super().exists_by(username=username)
 

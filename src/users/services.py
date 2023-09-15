@@ -9,7 +9,6 @@ from users.dal import UserDAL
 from users.exceptions import (
     UserLoginError,
     UserRegisterError,
-    UserError,
     UserInvalidPassword,
     UserNotFoundError,
 )

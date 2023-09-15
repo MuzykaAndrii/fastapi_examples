@@ -1,7 +1,7 @@
 from typing import Optional
 from datetime import datetime, timedelta
 
-from fastapi import HTTPException, Request, Response
+from fastapi import Request, Response
 from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
 from sqladmin.authentication import AuthenticationBackend
