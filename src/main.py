@@ -13,7 +13,7 @@ from users.admin import (
 )
 
 from config import (
-    AUTH_SECRET,
+    JWT_SECRET,
     REDIS_HOST,
     REDIS_PORT,
 )
@@ -59,7 +59,7 @@ app.add_middleware(
 
 admin = Admin(
     app=app,
-    authentication_backend=AdminAuth(secret_key=AUTH_SECRET),
+    authentication_backend=AdminAuth(secret_key=JWT_SECRET),
     engine=engine,
 )
 

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from users.dal import UserDAL
 
 from users.schemas import (
@@ -9,6 +9,8 @@ from users.schemas import (
 from users.services import create_user, login_user
 from users.exceptions import (
     EmailAlreadyInUseError,
+    UserInvalidPassword,
+    UserNotFoundError,
     UsernameAlreadyInUseError,
 )
 
@@ -35,9 +37,18 @@ async def register(user_in: UserCreate) -> UserRead:
 
 
 @router.post("/login", status_code=200)
-async def login(credentials: UserLogin) -> UserRead:
-    user = await login_user(credentials)
-    return user
+async def login(response: Response, credentials: UserLogin):
+    try:
+        new_response = await login_user(response, credentials)
+
+    except UserNotFoundError:
+        raise HTTPException(status_code=401, detail="User not found")
+    except UserInvalidPassword:
+        raise HTTPException(status_code=401, detail="Invalid password")
+    except Exception:
+        raise HTTPException(status_code=500)
+    else:
+        response = new_response
 
 
 @router.post("/logout")
