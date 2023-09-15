@@ -17,7 +17,7 @@ from users.models import User
 from users.schemas import UserCreate, UserLogin
 
 
-async def create_user(user_in: UserCreate) -> User | None:
+async def create_user(user_in: UserCreate) -> User:
     try:
         await UserDAL.check_email_or_username_existence(
             email=user_in.email,
@@ -54,10 +54,9 @@ async def authenticate_user(user_in: UserLogin) -> User:
     return user
 
 
-def set_auth_cookie(response_obj: Response, user_id: int) -> Response:
+def set_auth_cookie(response_obj: Response, user_id: int) -> None:
     auth_token = JwtManager.create_token(str(user_id))
-    new_response = AuthCookieManager().set_cookie(response_obj, auth_token)
-    return new_response
+    AuthCookieManager().set_cookie(response_obj, auth_token)
 
 
 async def login_user(response_obj: Response, user_in: UserLogin) -> Response:
@@ -69,3 +68,7 @@ async def login_user(response_obj: Response, user_in: UserLogin) -> Response:
     login_response = set_auth_cookie(response_obj, user.id)
 
     return login_response
+
+
+def logout_user(response: Response) -> None:
+    AuthCookieManager().delete_cookie(response)

@@ -104,6 +104,9 @@ class CookieManager:
             return None
         return token
 
+    def delete_cookie(self, response: Response) -> None:
+        response.delete_cookie(self.cookie_name)
+
 
 class AuthCookieManager(CookieManager):
     # TODO: wrap to singleton
