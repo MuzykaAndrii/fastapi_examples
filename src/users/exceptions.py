@@ -1,22 +1,42 @@
+from fastapi import HTTPException
+
+
+class JwtNotValidError(Exception):
+    pass
+
+
+class JWTExpiredError(Exception):
+    pass
+
+
 class UserError(Exception):
     pass
 
 
-class UserNotFoundError(UserError):
+class UserUnauthenticatedError(HTTPException, UserError):
+    def __init__(self) -> None:
+        super(HTTPException, self).__init__(status_code=401, detail="Unauthenticated")
+
+
+class UserLoginError(UserError):
     pass
 
 
-class UserInvalidPassword(UserError):
+class UserNotFoundError(UserLoginError):
     pass
 
 
-class UserCredentialsError(UserError):
+class UserInvalidPassword(UserLoginError):
     pass
 
 
-class EmailAlreadyInUseError(UserCredentialsError):
+class UserRegisterError(UserError):
     pass
 
 
-class UsernameAlreadyInUseError(UserCredentialsError):
+class EmailAlreadyInUseError(UserRegisterError):
+    pass
+
+
+class UsernameAlreadyInUseError(UserRegisterError):
     pass

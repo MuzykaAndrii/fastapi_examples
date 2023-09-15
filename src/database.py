@@ -1,6 +1,5 @@
 from typing import Any, AsyncGenerator, Mapping
-from pydantic import BaseModel as BaseSchema
-from sqlalchemy import exists, select
+from sqlalchemy import select
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -26,7 +25,6 @@ async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
-        await session.close()
 
 
 class BaseDAL:
@@ -37,9 +35,7 @@ class BaseDAL:
         async with async_session_maker() as session:
             result = await session.get(cls.model, id)
 
-            if not result:
-                return None
-            return result.scalar_one()
+            return result.scalar_one_or_none()
 
     @classmethod
     async def create(cls, **fields: Mapping):

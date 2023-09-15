@@ -1,9 +1,14 @@
 from fastapi import Response
-from config import AUTH_TOKEN_NAME
-from users.auth import CookieManager, JwtManager, PWDManager
+
+from users.auth import (
+    AuthCookieManager,
+    JwtManager,
+    PWDManager,
+)
 from users.dal import UserDAL
 from users.exceptions import (
-    UserCredentialsError,
+    UserLoginError,
+    UserRegisterError,
     UserError,
     UserInvalidPassword,
     UserNotFoundError,
@@ -18,7 +23,7 @@ async def create_user(user_in: UserCreate) -> User | None:
             email=user_in.email,
             username=user_in.username,
         )
-    except UserCredentialsError as e:
+    except UserRegisterError as e:
         raise e
 
     raw_password = user_in.password
@@ -49,12 +54,18 @@ async def authenticate_user(user_in: UserLogin) -> User:
     return user
 
 
+def set_auth_cookie(response_obj: Response, user_id: int) -> Response:
+    auth_token = JwtManager.create_token(str(user_id))
+    new_response = AuthCookieManager().set_cookie(response_obj, auth_token)
+    return new_response
+
+
 async def login_user(response_obj: Response, user_in: UserLogin) -> Response:
     try:
         user = await authenticate_user(user_in)
-    except UserError as error:
+    except UserLoginError as error:
         raise error
 
-    auth_token = JwtManager.create_access_token(user.id)
-    new_response = CookieManager(AUTH_TOKEN_NAME).set_cookie(response_obj, auth_token)
-    return new_response
+    login_response = set_auth_cookie(response_obj, user.id)
+
+    return login_response

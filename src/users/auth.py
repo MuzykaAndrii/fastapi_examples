@@ -5,13 +5,15 @@ from fastapi import HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
 from sqladmin.authentication import AuthenticationBackend
-from jose import jwt
+from jose import JWTError, jwt
 
 from config import (
+    AUTH_TOKEN_NAME,
     DEBUG,
     JWT_EXPIRE_MINUTES,
     JWT_SECRET,
 )
+from users.exceptions import JWTExpiredError, JwtNotValidError
 
 
 class PWDManager:
@@ -38,21 +40,46 @@ class JwtManager:
             "sub": None,
         }
 
+    @staticmethod
+    def _is_token_expired(payload: dict) -> bool:
+        expire_at = payload.get("exp")
+
+        if int(expire_at) < datetime.utcnow():
+            return True
+        return False
+
     @classmethod
-    def create_access_token(cls, user_id: int) -> str:
+    def create_token(cls, data: str) -> str:
         expire: datetime = cls._get_expire_time()
         token_data: dict = cls._get_token_pattern()
 
         token_data.update({"exp": expire})
-        token_data.update({"sub": user_id})
+        token_data.update({"sub": data})
 
-        encoded: str = jwt.encode(
+        encoded_token: str = jwt.encode(
             token_data,
             JWT_SECRET,
             "HS256",
         )
 
-        return encoded
+        return encoded_token
+
+    @classmethod
+    def read_token(cls, token: str) -> dict:
+        try:
+            payload = jwt.decode(
+                token,
+                JWT_SECRET,
+                "HS256",
+            )
+        except JWTError:
+            raise JwtNotValidError
+
+        expired = cls._is_token_expired(payload)
+        if expired:
+            raise JWTExpiredError
+
+        return payload
 
 
 class CookieManager:
@@ -69,6 +96,20 @@ class CookieManager:
         )
 
         return response_obj
+
+    def get_cookie(self, request: Request) -> str | None:
+        token = request.cookies.get(self.cookie_name)
+
+        if not token:
+            return None
+        return token
+
+
+class AuthCookieManager(CookieManager):
+    # TODO: wrap to singleton
+
+    def __init__(self) -> None:
+        super().__init__(AUTH_TOKEN_NAME)
 
 
 class AdminAuth(AuthenticationBackend):

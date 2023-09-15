@@ -32,8 +32,8 @@ async def register(user_in: UserCreate) -> UserRead:
         raise HTTPException(status_code=409, detail="Username already in use")
     except Exception:
         raise HTTPException(status_code=500)
-    else:
-        return user
+
+    return user
 
 
 @router.post("/login", status_code=200)
@@ -47,8 +47,9 @@ async def login(response: Response, credentials: UserLogin):
         raise HTTPException(status_code=401, detail="Invalid password")
     except Exception:
         raise HTTPException(status_code=500)
-    else:
-        response = new_response
+
+    response = new_response
+    return {"detail": "Successfully logged in"}
 
 
 @router.post("/logout")
