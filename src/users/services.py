@@ -1,8 +1,12 @@
-from users.auth import get_password_hash
+from users.auth import get_password_hash, verify_password
 from users.dal import UserDAL
-from users.exceptions import UserCredentialsError
+from users.exceptions import (
+    UserCredentialsError,
+    UserInvalidPassword,
+    UserNotFoundError,
+)
 from users.models import User
-from users.schemas import UserCreate
+from users.schemas import UserCreate, UserLogin
 
 
 async def create_user(user_in: UserCreate) -> User | None:
@@ -22,5 +26,21 @@ async def create_user(user_in: UserCreate) -> User | None:
         email=user_in.email,
         hashed_password=hashed_password,
     )
+
+    return user
+
+
+async def login_user(user_in: UserLogin) -> User:
+    user = await UserDAL.get_user_by_email_or_username(user_in.username_or_email)
+
+    if not user:
+        raise UserNotFoundError
+
+    pass_matching = verify_password(
+        raw_password=user_in.password, hashed_password=user.hashed_password
+    )
+
+    if not pass_matching:
+        raise UserInvalidPassword
 
     return user

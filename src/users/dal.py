@@ -4,6 +4,7 @@ from sqlalchemy import (
     select,
     or_,
 )
+from sqlalchemy.exc import NoResultFound
 from users.exceptions import EmailAlreadyInUseError, UsernameAlreadyInUseError
 
 from users.models import (
@@ -26,6 +27,22 @@ class UserDAL(BaseDAL):
 
         if username_existence:
             raise UsernameAlreadyInUseError
+
+    @classmethod
+    async def get_user_by_email_or_username(cls, email_or_username: str) -> User | None:
+        async with async_session_maker() as session:
+            q = select(User).where(
+                or_(User.email == email_or_username, User.username == email_or_username)
+            )
+
+            user = await session.execute(q)
+
+            try:
+                user = user.scalar_one()
+            except NoResultFound:
+                return None
+            else:
+                return user
 
 
 class RoleDAL(BaseDAL):
