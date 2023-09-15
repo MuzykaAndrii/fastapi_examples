@@ -44,7 +44,7 @@ class JwtManager:
     def _is_token_expired(payload: dict) -> bool:
         expire_at = payload.get("exp")
 
-        if int(expire_at) < datetime.utcnow():
+        if expire_at < datetime.utcnow().timestamp():
             return True
         return False
 

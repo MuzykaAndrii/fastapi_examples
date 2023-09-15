@@ -35,7 +35,9 @@ class BaseDAL:
         async with async_session_maker() as session:
             result = await session.get(cls.model, id)
 
-            return result.scalar_one_or_none()
+            if not result:
+                return None
+            return result
 
     @classmethod
     async def create(cls, **fields: Mapping):

@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response
 from users.dal import UserDAL
+from users.dependencies import get_current_user
 
 from users.schemas import (
     UserCreate,
@@ -55,3 +56,8 @@ async def login(response: Response, credentials: UserLogin):
 @router.post("/logout")
 async def logout_user():
     ...
+
+
+@router.get("/test")
+async def test(current_user=Depends(get_current_user)) -> UserRead:
+    return current_user

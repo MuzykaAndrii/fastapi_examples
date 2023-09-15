@@ -17,7 +17,7 @@ from users.exceptions import (
 
 
 def get_auth_token(request: Request) -> str:
-    auth_token = AuthCookieManager.get_cookie(request)
+    auth_token = AuthCookieManager().get_cookie(request)
 
     if not auth_token:
         raise UserUnauthenticatedError
