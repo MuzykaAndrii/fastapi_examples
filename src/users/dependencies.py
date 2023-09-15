@@ -14,6 +14,7 @@ from users.exceptions import (
     JwtNotValidError,
     UserUnauthenticatedError,
 )
+from users.models import User
 
 
 def get_auth_token(request: Request) -> str:
@@ -24,7 +25,7 @@ def get_auth_token(request: Request) -> str:
     return auth_token
 
 
-async def get_current_user(token: str = Depends(get_auth_token)):
+async def get_current_user(token: str = Depends(get_auth_token)) -> User:
     try:
         payload = JwtManager.read_token(token)
         user_id = int(payload.get("sub"))
@@ -36,4 +37,10 @@ async def get_current_user(token: str = Depends(get_auth_token)):
     if not user:
         raise HTTPException(status_code=401)
 
+    return user
+
+
+async def get_current_superuser(user: User = Depends(get_current_user)) -> User:
+    if not user.is_superuser:
+        raise HTTPException(status_code=403)
     return user

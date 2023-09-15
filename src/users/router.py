@@ -31,7 +31,8 @@ async def register(user_in: UserCreate) -> UserRead:
         raise HTTPException(status_code=409, detail="Email already in use")
     except UsernameAlreadyInUseError:
         raise HTTPException(status_code=409, detail="Username already in use")
-    except Exception:
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=500)
 
     return user
@@ -46,7 +47,8 @@ async def login(response: Response, credentials: UserLogin):
         raise HTTPException(status_code=401, detail="User not found")
     except UserInvalidPassword:
         raise HTTPException(status_code=401, detail="Invalid password")
-    except Exception:
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=500)
 
     response = new_response
@@ -56,8 +58,3 @@ async def login(response: Response, credentials: UserLogin):
 @router.post("/logout")
 async def logout_user():
     ...
-
-
-@router.get("/test")
-async def test(current_user=Depends(get_current_user)) -> UserRead:
-    return current_user
