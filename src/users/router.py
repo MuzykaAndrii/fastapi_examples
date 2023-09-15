@@ -57,6 +57,7 @@ async def login(response: Response, credentials: UserLogin):
 @router.post("/logout", status_code=204)
 async def logout(response: Response):
     logout_user(response)
+    return {"detail": "Successfully logged out"}
 
 
 # Used dependency behind route params

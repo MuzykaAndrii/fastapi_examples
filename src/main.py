@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_cache import FastAPICache
@@ -17,7 +17,7 @@ from config import (
     REDIS_PORT,
 )
 from database import engine
-from users.auth import (
+from users.admin import (
     AdminAuth,
 )
 from operations.router import router as router_operation
@@ -56,7 +56,14 @@ app.add_middleware(
     ],
 )
 
-admin = Admin(
+
+class MyAdmin(Admin):
+    async def logout(self, request: Request) -> Response:
+        response = await self.authentication_backend.logout(request)
+        return response
+
+
+admin = MyAdmin(
     app=app,
     authentication_backend=AdminAuth(secret_key=JWT_SECRET),
     engine=engine,

@@ -69,5 +69,5 @@ async def login_user(response_obj: Response, user_in: UserLogin) -> Response:
     return login_response
 
 
-def logout_user(response: Response) -> None:
-    AuthCookieManager().delete_cookie(response)
+def logout_user(response: Response) -> Response:
+    return AuthCookieManager().delete_cookie(response)

@@ -1,10 +1,7 @@
-from typing import Optional
 from datetime import datetime, timedelta
 
 from fastapi import Request, Response
-from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
-from sqladmin.authentication import AuthenticationBackend
 from jose import JWTError, jwt
 
 from config import (
@@ -104,8 +101,9 @@ class CookieManager:
             return None
         return token
 
-    def delete_cookie(self, response: Response) -> None:
+    def delete_cookie(self, response: Response) -> Response:
         response.delete_cookie(self.cookie_name)
+        return response
 
 
 class AuthCookieManager(CookieManager):
@@ -113,30 +111,3 @@ class AuthCookieManager(CookieManager):
 
     def __init__(self) -> None:
         super().__init__(AUTH_TOKEN_NAME)
-
-
-class AdminAuth(AuthenticationBackend):
-    async def login(self, request: Request) -> bool:
-        form = await request.form()
-        username, password = form["username"], form["password"]
-
-        # Validate username/password credentials
-        # And update session
-        request.session.update({"token": "..."})
-
-        return True
-
-    async def logout(self, request: Request) -> bool:
-        pass
-
-    async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
-        # token = request.cookies.get("bonds")
-
-        # if not token:
-        #     return RedirectResponse(request.url_for("admin:login"), status_code=302)
-
-        # user = await get_user_by_jwt(token)
-
-        # if not user_is_admin(user):
-        #     raise HTTPException(403)
-        pass
