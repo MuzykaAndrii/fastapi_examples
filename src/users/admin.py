@@ -34,7 +34,7 @@ class UserAdmin(ModelView, model=User):
     name_plural = "Users"
     icon = "fa-solid fa-user"
 
-    column_exclude_list = [User.hashed_password]
+    column_exclude_list = [User.hashed_password, User.role_id]
     column_details_exclude_list = [User.hashed_password]
     form_excluded_columns = [User.hashed_password]
 
