@@ -1,28 +1,21 @@
+import asyncio
 from logging.config import fileConfig
-import os
-import sys
 
-from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
-
-sys.path.append(os.path.join(sys.path[0], "src"))
+from sqlalchemy.engine import Connection
+from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from src.config import settings
-from users.models import Base as AuthBase
-from operations.models import Base as OperationBase
+from src.users.models import Base as AuthBase
+from src.operations.models import Base as OperationBase
 
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-section = config.config_ini_section
-config.set_section_option(section, "settings.DB_HOST", settings.DB_HOST)
-config.set_section_option(section, "settings.DB_PORT", settings.DB_PORT)
-config.set_section_option(section, "settings.DB_USER", settings.DB_USER)
-config.set_section_option(section, "settings.DB_NAME", settings.DB_NAME)
-config.set_section_option(section, "settings.DB_PASS", settings.DB_PASS)
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -67,24 +60,33 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+def do_run_migrations(connection: Connection) -> None:
+    context.configure(connection=connection, target_metadata=target_metadata)
 
-    In this scenario we need to create an Engine
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+async def run_async_migrations() -> None:
+    """In this scenario we need to create an Engine
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
+
+    connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
-    with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+    async with connectable.connect() as connection:
+        await connection.run_sync(do_run_migrations)
 
-        with context.begin_transaction():
-            context.run_migrations()
+    await connectable.dispose()
+
+
+def run_migrations_online() -> None:
+    asyncio.run(run_async_migrations())
 
 
 if context.is_offline_mode():
