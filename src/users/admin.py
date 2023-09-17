@@ -1,32 +1,51 @@
-from fastapi import Request
+from fastapi import HTTPException, Request
 from sqladmin.authentication import AuthenticationBackend
 from fastapi.responses import RedirectResponse
 from sqladmin import ModelView
-from users.dependencies import get_auth_token, get_current_superuser, get_current_user
+from users.auth import JwtManager
+from users.dependencies import get_current_superuser, get_current_user
+from users.exceptions import UserLoginError
 
 from users.models import (
     Role,
     User,
 )
-from users.services import logout_user
+from users.schemas import UserLogin
+from users.services import authenticate_user
 
 
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
-        username, password = form["username"], form["password"]
+
+        credentials = UserLogin(
+            username_or_email=form["username"],
+            password=form["password"],
+        )
+
+        try:
+            user = await authenticate_user(credentials)
+        except UserLoginError:
+            return False
+
+        auth_token = JwtManager.create_token(str(user.id))
+        request.session.update({"admin_token": auth_token})
 
         return True
 
     async def logout(self, request: Request) -> bool:
-        response = RedirectResponse(request.url_for("admin:index"), status_code=302)
-        response = logout_user(response)
-        return response
+        request.session.clear()
 
     async def authenticate(self, request: Request) -> RedirectResponse | None:
-        token = get_auth_token(request)
-        current_user = await get_current_user(token)
-        await get_current_superuser(current_user)
+        token = request.session.get("admin_token")
+        if not token:
+            return RedirectResponse(request.url_for("admin:login"), status_code=302)
+
+        try:
+            current_user = await get_current_user(token)
+            await get_current_superuser(current_user)
+        except HTTPException:
+            return RedirectResponse(request.url_for("admin:login"), status_code=302)
 
 
 class UserAdmin(ModelView, model=User):

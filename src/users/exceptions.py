@@ -13,7 +13,7 @@ class UserError(Exception):
     pass
 
 
-class UserUnauthenticatedError(HTTPException, UserError):
+class UserNotAuthenticatedError(HTTPException, UserError):
     def __init__(self) -> None:
         super(HTTPException, self).__init__(status_code=401, detail="Unauthenticated")
 

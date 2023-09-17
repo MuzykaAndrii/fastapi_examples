@@ -12,7 +12,7 @@ from users.dal import UserDAL
 from users.exceptions import (
     JWTExpiredError,
     JwtNotValidError,
-    UserUnauthenticatedError,
+    UserNotAuthenticatedError,
 )
 from users.models import User
 
@@ -21,7 +21,7 @@ def get_auth_token(request: Request) -> str:
     auth_token = AuthCookieManager().get_cookie(request)
 
     if not auth_token:
-        raise UserUnauthenticatedError
+        raise UserNotAuthenticatedError
     return auth_token
 
 

@@ -57,13 +57,7 @@ app.add_middleware(
 )
 
 
-class MyAdmin(Admin):
-    async def logout(self, request: Request) -> Response:
-        response = await self.authentication_backend.logout(request)
-        return response
-
-
-admin = MyAdmin(
+admin = Admin(
     app=app,
     authentication_backend=AdminAuth(secret_key=JWT_SECRET),
     engine=engine,
