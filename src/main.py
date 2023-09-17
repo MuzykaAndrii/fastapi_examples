@@ -11,11 +11,7 @@ from users.admin import (
     RoleAdmin,
     UserAdmin,
 )
-from config import (
-    JWT_SECRET,
-    REDIS_HOST,
-    REDIS_PORT,
-)
+from config import settings
 from database import engine
 from admin.auth import (
     AdminAuth,
@@ -28,7 +24,7 @@ from users.router import router as router_auth
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # on startup
-    redis = aioredis.from_url(f"redis://{REDIS_HOST}{REDIS_PORT}")
+    redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}{settings.REDIS_PORT}")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
     yield
@@ -59,7 +55,7 @@ app.add_middleware(
 
 admin = Admin(
     app=app,
-    authentication_backend=AdminAuth(secret_key=JWT_SECRET),
+    authentication_backend=AdminAuth(secret_key=settings.JWT_SECRET),
     engine=engine,
 )
 

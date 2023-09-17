@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from tasks.tasks import send_letter
-from config import SMTP_USER
+from config import settings
 
 
 router = APIRouter(
@@ -12,7 +12,7 @@ router = APIRouter(
 
 # @router.get("/simple")
 # def send_simple_email(user=Depends(current_user)):
-#     send_letter.delay(SMTP_USER, f"Hello, world! <br> P.s. from {user.username}")
+#     send_letter.delay(settings.SMTP_USER, f"Hello, world! <br> P.s. from {user.username}")
 #     return {
 #         "status": 200,
 #         "data": "email sent successfully",

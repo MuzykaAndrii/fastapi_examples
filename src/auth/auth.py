@@ -4,12 +4,7 @@ from fastapi import Request, Response
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
-from config import (
-    AUTH_TOKEN_NAME,
-    DEBUG,
-    JWT_EXPIRE_MINUTES,
-    JWT_SECRET,
-)
+from config import settings
 from auth.exceptions import JWTExpiredError, JwtNotValidError
 
 
@@ -27,7 +22,7 @@ class PWDManager:
 
 class JwtManager:
     @staticmethod
-    def _get_expire_time(exp_minutes=JWT_EXPIRE_MINUTES) -> datetime:
+    def _get_expire_time(exp_minutes=settings.JWT_EXPIRE_MINUTES) -> datetime:
         return datetime.utcnow() + timedelta(minutes=int(exp_minutes))
 
     @staticmethod
@@ -47,7 +42,7 @@ class JwtManager:
         return False
 
     @classmethod
-    def create_token(cls, data: str, expire: datetime | None) -> str:
+    def create_token(cls, data: str, expire: datetime | None = None) -> str:
         if not expire:
             expire: datetime = cls._get_expire_time()
 
@@ -58,7 +53,7 @@ class JwtManager:
 
         encoded_token: str = jwt.encode(
             token_data,
-            JWT_SECRET,
+            settings.JWT_SECRET,
             "HS256",
         )
 
@@ -69,7 +64,7 @@ class JwtManager:
         try:
             payload = jwt.decode(
                 token,
-                JWT_SECRET,
+                settings.JWT_SECRET,
                 "HS256",
             )
         except JWTError:
@@ -92,7 +87,7 @@ class CookieManager:
             token,
             httponly=True,
             samesite="lax",
-            secure=not DEBUG,
+            secure=not settings.DEBUG,
         )
 
         return response_obj
@@ -113,4 +108,4 @@ class AuthCookieManager(CookieManager):
     # TODO: wrap to singleton
 
     def __init__(self) -> None:
-        super().__init__(AUTH_TOKEN_NAME)
+        super().__init__(settings.AUTH_TOKEN_NAME)
