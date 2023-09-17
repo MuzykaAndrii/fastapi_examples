@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_cache import FastAPICache
@@ -17,7 +17,7 @@ from config import (
     REDIS_PORT,
 )
 from database import engine
-from users.admin import (
+from admin.auth import (
     AdminAuth,
 )
 from operations.router import router as router_operation

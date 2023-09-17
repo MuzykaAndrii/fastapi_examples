@@ -1,14 +1,6 @@
 from fastapi import HTTPException
 
 
-class JwtNotValidError(Exception):
-    pass
-
-
-class JWTExpiredError(Exception):
-    pass
-
-
 class UserError(Exception):
     pass
 

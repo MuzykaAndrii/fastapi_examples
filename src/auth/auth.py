@@ -10,7 +10,7 @@ from config import (
     JWT_EXPIRE_MINUTES,
     JWT_SECRET,
 )
-from users.exceptions import JWTExpiredError, JwtNotValidError
+from auth.exceptions import JWTExpiredError, JwtNotValidError
 
 
 class PWDManager:
@@ -32,6 +32,7 @@ class JwtManager:
 
     @staticmethod
     def _get_token_pattern() -> dict:
+        # TODO: rebuild to pydantic schema
         return {
             "expire": None,
             "sub": None,
@@ -46,8 +47,10 @@ class JwtManager:
         return False
 
     @classmethod
-    def create_token(cls, data: str) -> str:
-        expire: datetime = cls._get_expire_time()
+    def create_token(cls, data: str, expire: datetime | None) -> str:
+        if not expire:
+            expire: datetime = cls._get_expire_time()
+
         token_data: dict = cls._get_token_pattern()
 
         token_data.update({"exp": expire})

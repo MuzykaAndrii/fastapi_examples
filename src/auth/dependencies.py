@@ -4,15 +4,15 @@ from fastapi import (
     Request,
 )
 
-from users.auth import (
+from auth.auth import (
     AuthCookieManager,
     JwtManager,
 )
 from users.dal import UserDAL
-from users.exceptions import (
+from users.exceptions import UserNotAuthenticatedError
+from auth.exceptions import (
     JWTExpiredError,
     JwtNotValidError,
-    UserNotAuthenticatedError,
 )
 from users.models import User
 

@@ -1,13 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from users.dal import UserDAL
-from users.dependencies import get_auth_token, get_current_user
+from fastapi import (
+    APIRouter,
+    HTTPException,
+    Response,
+)
 
 from users.schemas import (
     UserCreate,
     UserLogin,
     UserRead,
 )
-from users.services import create_user, login_user, logout_user
+from auth.services import login_user, logout_user
+from users.services import create_user
 from users.exceptions import (
     EmailAlreadyInUseError,
     UserInvalidPassword,
@@ -58,12 +61,3 @@ async def login(response: Response, credentials: UserLogin):
 async def logout(response: Response):
     logout_user(response)
     return {"detail": "Successfully logged out"}
-
-
-# Used dependency behind route params
-# @router.get("/test")
-# async def test(request: Request):
-#     token = get_auth_token(request)
-#     res = await get_current_user(token)
-#     print(res)
-#     return ""
