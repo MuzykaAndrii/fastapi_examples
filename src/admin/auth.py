@@ -1,6 +1,5 @@
 from fastapi import HTTPException, Request
 from fastapi.responses import RedirectResponse
-from sqladmin.authentication import AuthenticationBackend
 
 from auth.auth import JwtManager
 from auth.dependencies import get_current_superuser, get_current_user
@@ -10,7 +9,7 @@ from users.schemas import UserLogin
 from auth.services import authenticate_user
 
 
-class AdminAuth(AuthenticationBackend):
+class AdminAuth:
     async def login(self, request: Request) -> bool:
         form = await request.form()
 

@@ -5,17 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
-from sqladmin import Admin
 
-from users.admin import (
-    RoleAdmin,
-    UserAdmin,
-)
 from config import settings
 from database import engine
-from admin.auth import (
-    AdminAuth,
-)
+
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 from users.router import router as router_auth
@@ -51,16 +44,6 @@ app.add_middleware(
         "Authorization",
     ],
 )
-
-
-admin = Admin(
-    app=app,
-    authentication_backend=AdminAuth(secret_key=settings.JWT_SECRET),
-    engine=engine,
-)
-
-admin.add_view(UserAdmin)
-admin.add_view(RoleAdmin)
 
 app.include_router(router_operation)
 app.include_router(router_tasks)
