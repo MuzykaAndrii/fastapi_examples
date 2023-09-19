@@ -1,4 +1,5 @@
 from datetime import datetime
+from fastapi import Request
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -26,6 +27,12 @@ class Role(Base):
     def __str__(self) -> str:
         return f"Role {self.name}"
 
+    def __admin_repr__(self, request: Request) -> str:
+        return str(self)
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f"<span>{str(self)}</span>"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -44,3 +51,9 @@ class User(Base):
 
     def __str__(self) -> str:
         return f"User: {self.username}"
+
+    async def __admin_repr__(self, request: Request) -> str:
+        return str(self)
+
+    async def __admin_select2_repr__(self, request: Request) -> str:
+        return f"<span>User(id={self.id}, email={self.email})</span>"

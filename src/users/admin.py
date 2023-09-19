@@ -1,6 +1,4 @@
-from typing import Any, Optional, Type
 from starlette_admin.contrib.sqla import ModelView
-from starlette_admin.contrib.sqla.converters import BaseSQLAModelConverter
 
 from users.models import Role, User
 

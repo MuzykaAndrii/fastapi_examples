@@ -12,7 +12,6 @@ from database import engine
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 from users.router import router as router_auth
-from users.models import User, Role
 from users.admin import UserAdminView, RoleAdminView
 
 
