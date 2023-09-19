@@ -1,12 +1,15 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from starlette_admin.contrib.sqla import Admin
 
+from admin.auth import AdminAuthProvider
 from config import settings
 from database import engine
 from operations.router import router as router_operation
@@ -52,6 +55,8 @@ admin = Admin(
     engine=engine,
     title="Admin panel",
     debug=settings.DEBUG,
+    auth_provider=AdminAuthProvider(),
+    middlewares=[Middleware(SessionMiddleware, secret_key=settings.JWT_SECRET)],
 )
 
 admin.add_view(UserAdminView())
