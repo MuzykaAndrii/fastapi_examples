@@ -5,13 +5,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from starlette_admin.contrib.sqla import Admin
 
 from config import settings
 from database import engine
-
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 from users.router import router as router_auth
+from users.models import User, Role
+from users.admin import UserAdminView, RoleAdminView
 
 
 @asynccontextmanager
@@ -29,6 +31,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -44,6 +47,19 @@ app.add_middleware(
         "Authorization",
     ],
 )
+
+
+admin = Admin(
+    engine=engine,
+    title="Admin panel",
+    debug=settings.DEBUG,
+)
+
+admin.add_view(UserAdminView())
+admin.add_view(RoleAdminView())
+
+admin.mount_to(app)
+
 
 app.include_router(router_operation)
 app.include_router(router_tasks)

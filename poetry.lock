@@ -1900,6 +1900,28 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
 
 [[package]]
+name = "starlette-admin"
+version = "0.11.2"
+description = "Fast, beautiful and extensible administrative interface framework for Starlette/FastApi applications"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "starlette_admin-0.11.2-py3-none-any.whl", hash = "sha256:b4880d5c7110c6d879679e84b154733b1177e8235311b83be0acc3f557546aac"},
+    {file = "starlette_admin-0.11.2.tar.gz", hash = "sha256:c0cc03fcf8cc65810f1eb3045d764beab44ea4e40c2327eafeb3a7ee20714825"},
+]
+
+[package.dependencies]
+jinja2 = ">=3,<4"
+python-multipart = "*"
+starlette = "*"
+
+[package.extras]
+dev = ["pre-commit (>=2.20.0,<4.0.0)", "uvicorn (>=0.20.0,<0.24.0)"]
+doc = ["mkdocs (>=1.4.2,<2.0.0)", "mkdocs-material (>=9.0.0,<10.0.0)", "mkdocs-static-i18n (>=0.53.0,<0.57.0)", "mkdocstrings[python] (>=0.19.0,<0.23.0)"]
+i18n = ["babel (>=2.12.1)"]
+test = ["aiomysql (>=0.1.1,<0.3.0)", "aiosqlite (>=0.17.0,<0.20.0)", "arrow (>=1.2.3,<1.3.0)", "asyncpg (>=0.27.0,<0.29.0)", "backports-zoneinfo", "black (==23.7.0)", "colour (>=0.1.5,<0.2.0)", "coverage (>=7.0.0,<7.4.0)", "fasteners (==0.18)", "httpx (>=0.23.3,<0.25.0)", "itsdangerous (>=2.1.2,<2.2.0)", "mongoengine (>=0.25.0,<0.28.0)", "mypy (==1.5.1)", "odmantic (>=0.9.0,<0.10.0)", "passlib (>=1.7.4,<1.8.0)", "phonenumbers (>=8.13.3,<8.14.0)", "pillow (>=9.4.0,<9.6.0)", "psycopg2-binary (>=2.9.5,<3.0.0)", "pydantic[email] (>=1.10.2,<2.0.0)", "pymysql[rsa] (>=1.0.2,<1.2.0)", "pytest (>=7.2.0,<7.5.0)", "pytest-asyncio (>=0.20.2,<0.22.0)", "ruff (==0.0.280)", "sqlalchemy-file (>=0.5.0,<0.6.0)", "sqlalchemy-utils (>=0.40.0,<0.42.0)", "tinydb (>=4.7.0,<4.9.0)"]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -2317,4 +2339,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "8db29d2900f70dd84250d082428fab6429f144d3db1588f5eb0e977dc97a3dba"
+content-hash = "d788e24dcd58f1836c94db409cdcd2e14a121302d4d57649ae52ff9a59485e36"

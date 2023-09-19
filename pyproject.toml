@@ -19,6 +19,7 @@ flower = "^2.0.1"
 passlib = "^1.7.4"
 python-jose = "^3.3.0"
 bcrypt = "^4.0.1"
+starlette-admin = "^0.11.2"
 
 
 [tool.poetry.group.dev.dependencies]
