@@ -13,6 +13,8 @@ class Settings(BaseSettings):
 
     DEBUG: bool
 
+    ORIGINS: list[str]
+
     DB_HOST: str
     DB_PORT: int
     DB_NAME: str
