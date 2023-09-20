@@ -10,8 +10,8 @@ services:
       - .env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
-      interval: 20s
-      timeout: 60s
+      interval: 5s
+      timeout: 10s
       retries: 5
       start_period: 80s  
     volumes:
@@ -37,6 +37,25 @@ services:
     command: --port 5370
     ports:
       - 5370:5370
+  
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    command: ["docker/app.sh", "dev"]
+    restart: always
+    working_dir: /backend
+    ports: 
+      - 8000:8000
+    links:
+      - db
+    volumes:
+      - ./src:/backend/src
+      - ./tests:/backend/tests
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   local_pgdata-only-db:

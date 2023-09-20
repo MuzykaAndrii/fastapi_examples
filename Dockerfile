@@ -18,10 +18,10 @@ ENV PATH="${PATH}:${POETRY_VENV}/bin"
 WORKDIR ./backend
 
 COPY poetry.lock pyproject.toml .
-COPY . ./
-
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction
+
+COPY . ./
 
 RUN chmod a+x docker/*.sh
 
