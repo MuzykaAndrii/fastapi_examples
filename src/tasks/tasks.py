@@ -8,7 +8,7 @@ from config import settings
 # celery -A tasks.tasks:celery flower --loglevel=INFO
 
 
-celery = Celery("tasks", broker=f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}")
+celery = Celery("tasks", broker=settings.redis_url)
 
 
 def create_email_letter(recipient: str, content: str):

@@ -21,7 +21,7 @@ from users.admin.views import UserAdminView, RoleAdminView
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # on startup
-    redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}{settings.REDIS_PORT}")
+    redis = aioredis.from_url(settings.redis_url)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
     yield

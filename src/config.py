@@ -31,6 +31,7 @@ class Settings(BaseSettings):
 
     REDIS_HOST: str
     REDIS_PORT: int
+    REDIS_URL_PATTERN: str
 
     SMTP_HOST: str
     SMTP_PORT: int
@@ -50,6 +51,14 @@ class Settings(BaseSettings):
             host=self.DB_HOST,
             port=self.DB_PORT,
             name=self.DB_NAME,
+        )
+
+    @computed_field
+    @property
+    def redis_url(self) -> str:
+        return self.REDIS_URL_PATTERN.format(
+            host=self.REDIS_HOST,
+            port=self.REDIS_PORT,
         )
 
 
