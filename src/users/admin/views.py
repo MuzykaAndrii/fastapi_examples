@@ -1,24 +1,54 @@
-from starlette_admin.contrib.sqla.ext.pydantic import ModelView
+from fastapi import Request
 from starlette_admin import ExportType
+from starlette_admin.fields import StringField, DateTimeField
+from admin.admin import MyModelView
+from auth.auth import PWDManager
 
 from users.admin.schemas import RoleAdminSchema, UserAdminSchema
 from users.models import Role, User
 
 
-class UserAdminView(ModelView):
+class UserAdminView(MyModelView):
     def __init__(self, *args, **kwargs):
         model = User
         pydantic_model = UserAdminSchema
         icon = "fa-regular fa-user"
-        name = "Users"
-        label = None
+        name = "User"
+        label = "Users"
         identity = None
 
         super().__init__(model, pydantic_model, icon, name, label, identity)
 
-    exclude_fields_from_list = ["hashed_password"]
-    exclude_fields_from_detail = ["hashed_password"]
-    exclude_fields_from_edit = ["hashed_password"]
+    fields = [
+        User.id,
+        User.username,
+        User.email,
+        StringField(
+            "password",
+            label="Password",
+            exclude_from_detail=True,
+            exclude_from_edit=True,
+            exclude_from_list=True,
+        ),
+        StringField(
+            "hashed_password",
+            exclude_from_detail=True,
+            exclude_from_edit=True,
+            exclude_from_list=True,
+            disabled=True,
+            input_type="hidden",
+            label="",
+        ),
+        DateTimeField(
+            "registered_at",
+            exclude_from_create=True,
+            exclude_from_edit=True,
+        ),
+        User.is_active,
+        User.is_verified,
+        User.is_superuser,
+        User.role,
+    ]
 
     export_fields = [
         "id",
@@ -37,14 +67,23 @@ class UserAdminView(ModelView):
     responsive_table = True
     save_state = True
 
+    def on_before_create(self, request: Request, data: dict) -> dict:
+        raw_password = data.get("password")
+        hashed_password = PWDManager.get_password_hash(raw_password)
 
-class RoleAdminView(ModelView):
+        data.update({"hashed_password": hashed_password})
+        data.pop("password", None)
+
+        return data
+
+
+class RoleAdminView(MyModelView):
     def __init__(self, *args, **kwargs):
         model = Role
         pydantic_model = RoleAdminSchema
         icon = "fa-user-tie"
-        name = "Roles"
-        label = None
+        name = "Role"
+        label = "Roles"
         identity = None
 
         super().__init__(model, pydantic_model, icon, name, label, identity)
