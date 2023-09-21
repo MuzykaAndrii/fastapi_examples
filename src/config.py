@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_URL_PATTERN: str
 
+    TEST_DB_HOST: str
+    TEST_DB_PORT: int
+    TEST_DB_NAME: str
+    TEST_DB_USER: str
+    TEST_DB_PASS: str
+    TEST_DB_URL_PATTERN: str
+
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
@@ -51,6 +58,17 @@ class Settings(BaseSettings):
             host=self.DB_HOST,
             port=self.DB_PORT,
             name=self.DB_NAME,
+        )
+
+    @computed_field
+    @property
+    def test_database_url(self) -> str:
+        return self.TEST_DB_URL_PATTERN.format(
+            user=self.TEST_DB_USER,
+            password=self.TEST_DB_PASS,
+            host=self.TEST_DB_HOST,
+            port=self.TEST_DB_PORT,
+            name=self.TEST_DB_NAME,
         )
 
     @computed_field
