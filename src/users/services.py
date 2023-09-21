@@ -1,12 +1,12 @@
-from auth.auth import (
+from src.auth.auth import (
     PWDManager,
 )
-from users.dal import UserDAL
-from users.exceptions import (
+from src.users.dal import UserDAL
+from src.users.exceptions import (
     UserRegisterError,
 )
-from users.models import User
-from users.schemas import UserCreate
+from src.users.models import User
+from src.users.schemas import UserCreate
 
 
 async def create_user(user_in: UserCreate) -> User:

@@ -2,7 +2,7 @@ from typing import Any, Mapping
 
 from sqlalchemy import select
 
-from database.db import async_session_maker
+from src.database.db import async_session_maker
 
 
 class BaseDAL:

@@ -53,6 +53,7 @@ services:
     volumes:
       - ./src:/backend/src
       - ./tests:/backend/tests
+      - ./migrations:/backend/migrations
     depends_on:
       db:
         condition: service_healthy

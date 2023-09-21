@@ -1,11 +1,11 @@
 from fastapi import Request
 from starlette_admin import ExportType
 from starlette_admin.fields import StringField, DateTimeField
-from admin.admin import MyModelView
-from auth.auth import PWDManager
 
-from users.admin.schemas import RoleAdminSchema, UserAdminSchema
-from users.models import Role, User
+from src.admin.admin import MyModelView
+from src.auth.auth import PWDManager
+from src.users.admin.schemas import RoleAdminSchema, UserAdminSchema
+from src.users.models import Role, User
 
 
 class UserAdminView(MyModelView):

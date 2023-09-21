@@ -4,17 +4,17 @@ from fastapi import (
     Request,
 )
 
-from auth.auth import (
+from src.auth.auth import (
     AuthCookieManager,
     JwtManager,
 )
-from users.dal import UserDAL
-from users.exceptions import UserNotAuthenticatedError
-from auth.exceptions import (
+from src.users.dal import UserDAL
+from src.users.exceptions import UserNotAuthenticatedError
+from src.auth.exceptions import (
     JWTExpiredError,
     JwtNotValidError,
 )
-from users.models import User
+from src.users.models import User
 
 
 def get_auth_token(request: Request) -> str:

@@ -4,10 +4,8 @@ from sqlalchemy import (
     String,
     TIMESTAMP,
 )
-from sqlalchemy.ext.declarative import declarative_base
 
-
-Base = declarative_base()
+from src.database.db import Base
 
 
 class Operation(Base):

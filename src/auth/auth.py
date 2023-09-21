@@ -4,8 +4,8 @@ from fastapi import Request, Response
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
-from config import settings
-from auth.exceptions import JWTExpiredError, JwtNotValidError
+from src.config import settings
+from src.auth.exceptions import JWTExpiredError, JwtNotValidError
 
 
 class PWDManager:

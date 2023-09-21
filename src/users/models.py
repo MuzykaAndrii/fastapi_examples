@@ -1,7 +1,6 @@
 from datetime import datetime
-from fastapi import Request
 
-from sqlalchemy.ext.declarative import declarative_base
+from fastapi import Request
 from sqlalchemy.orm import relationship
 from sqlalchemy import (
     Column,
@@ -12,8 +11,7 @@ from sqlalchemy import (
     Boolean,
 )
 
-
-Base = declarative_base()
+from src.database.db import Base
 
 
 class Role(Base):
@@ -21,6 +19,7 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    perms = Column(String, nullable=False)
 
     users = relationship("User", back_populates="role")
 

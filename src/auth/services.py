@@ -1,10 +1,10 @@
 from fastapi import Response
 
-from auth.auth import AuthCookieManager, JwtManager, PWDManager
-from users.dal import UserDAL
-from users.exceptions import UserInvalidPassword, UserLoginError, UserNotFoundError
-from users.models import User
-from users.schemas import UserLogin
+from src.auth.auth import AuthCookieManager, JwtManager, PWDManager
+from src.users.dal import UserDAL
+from src.users.exceptions import UserInvalidPassword, UserLoginError, UserNotFoundError
+from src.users.models import User
+from src.users.schemas import UserLogin
 
 
 async def authenticate_user(user_in: UserLogin) -> User:

@@ -9,13 +9,13 @@ from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from starlette_admin.contrib.sqla import Admin
 
-from admin.auth import AdminAuthProvider
-from config import settings
-from database.db import engine
-from operations.router import router as router_operation
-from tasks.router import router as router_tasks
-from users.router import router as router_auth
-from users.admin.views import UserAdminView, RoleAdminView
+from src.admin.auth import AdminAuthProvider
+from src.config import settings
+from src.database.db import engine
+from src.operations.router import router as router_operation
+from src.tasks.router import router as router_tasks
+from src.users.router import router as router_auth
+from src.users.admin.views import UserAdminView, RoleAdminView
 
 
 @asynccontextmanager
