@@ -8,7 +8,7 @@ from sqlalchemy.exc import (
 
 from fastapi_cache.decorator import cache
 
-from database import get_async_session
+from database.db import get_async_session
 from operations.models import Operation
 from operations.schemas import (
     OperationCreate,

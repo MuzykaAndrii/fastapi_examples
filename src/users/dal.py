@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import (
     select,
     or_,
@@ -11,7 +9,8 @@ from users.models import (
     Role,
     User,
 )
-from database import BaseDAL, async_session_maker
+from database.db import async_session_maker
+from database.dal import BaseDAL
 
 
 class UserDAL(BaseDAL):

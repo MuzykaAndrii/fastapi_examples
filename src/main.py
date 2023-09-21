@@ -11,7 +11,7 @@ from starlette_admin.contrib.sqla import Admin
 
 from admin.auth import AdminAuthProvider
 from config import settings
-from database import engine
+from database.db import engine
 from operations.router import router as router_operation
 from tasks.router import router as router_tasks
 from users.router import router as router_auth
