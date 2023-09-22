@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -12,6 +14,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=env_file_path, env_file_encoding="utf-8")
 
     DEBUG: bool
+    MODE: Literal["DEV", "TEST", "PROD"]
 
     ORIGINS: list[str]
 

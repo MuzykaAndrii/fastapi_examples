@@ -19,7 +19,6 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    perms = Column(String, nullable=False)
 
     users = relationship("User", back_populates="role")
 
