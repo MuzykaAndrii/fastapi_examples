@@ -79,9 +79,30 @@ async def test_register_user(
     assert response.status_code == response_status
 
 
-# @pytest.mark.parametrize(
-#     "username, email, password, repeat_password, response_status",
-#     [
+@pytest.mark.parametrize(
+    "username_or_email, password, response_status",
+    [
+        ("testuser1", "testpassword", 200),
+        ("testuser1@gmail.cpm", "testpassword", 200),
+        ("testuser2@gmail.cpm", "testpassword", 200),
+        ("testuser3", "testpassword", 200),
+        ("testuser2", "testpassword", 200),
+        ("fake@gmail.cpm", "testpassword", 401),
+        ("testuser1@gmail.cpm", "wrongpass", 401),
+        ("testuser1gmail.cpm", "testpassword", 401),
+        ("", "testpassword", 422),
+        ("testuser1@gmail.cpm", "", 422),
+    ],
+)
+async def test_login_user(
+    username_or_email, password, response_status, ac: AsyncClient
+):
+    response = await ac.post(
+        "/auth/login",
+        json={
+            "username_or_email": username_or_email,
+            "password": password,
+        },
+    )
 
-#     ]
-#     )
+    assert response.status_code == response_status

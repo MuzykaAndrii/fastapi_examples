@@ -2,19 +2,16 @@
     {
         "username": "testuser1",
         "email": "testuser1@gmail.cpm",
-        "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He",
-        "role_id": 1
+        "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He"
     },
     {
         "username": "testuser2",
         "email": "testuser2@gmail.cpm",
-        "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He",
-        "role_id": 1
+        "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He"
     },
     {
         "username": "testuser3",
         "email": "testuser3@gmail.cpm",
-        "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He",
-        "role_id": 1
+        "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He"
     }
 ]
