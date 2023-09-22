@@ -2,6 +2,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     EmailStr,
+    Field,
     validator,
 )
 
@@ -19,16 +20,11 @@ class UserRead(BaseModel):
 
 
 class UserCreate(BaseModel):
-    username: str
+    # TODO: change deprecated @validator to @field_validator
+    username: str = Field(min_length=4, max_length=20)
     email: EmailStr
-    password: str
+    password: str = Field(min_length=8, max_length=30)
     repeat_password: str
-
-    @validator("password")
-    def validate_password(cls, value):
-        if len(value) < 8:
-            raise ValueError("Password must be at least 8 characters long")
-        return value
 
     @validator("repeat_password")
     def validate_repeat_password(cls, value, values):
