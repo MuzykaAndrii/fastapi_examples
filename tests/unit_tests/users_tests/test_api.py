@@ -77,3 +77,11 @@ async def test_register_user(
     )
 
     assert response.status_code == response_status
+
+
+# @pytest.mark.parametrize(
+#     "username, email, password, repeat_password, response_status",
+#     [
+
+#     ]
+#     )
