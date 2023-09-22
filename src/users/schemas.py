@@ -1,9 +1,11 @@
+from typing import Any
 from pydantic import (
     BaseModel,
     ConfigDict,
     EmailStr,
     Field,
-    validator,
+    FieldValidationInfo,
+    field_validator,
 )
 
 
@@ -26,11 +28,13 @@ class UserCreate(BaseModel):
     password: str = Field(min_length=8, max_length=30)
     repeat_password: str
 
-    @validator("repeat_password")
-    def validate_repeat_password(cls, value, values):
-        if "password" in values and value != values["password"]:
+    @field_validator("repeat_password")
+    @classmethod
+    def validate_repeat_password(
+        cls, repeat_password: str, values: FieldValidationInfo
+    ):
+        if repeat_password != values.data.get("password", None):
             raise ValueError("Passwords do not match")
-        return value
 
 
 class UserLogin(BaseModel):
