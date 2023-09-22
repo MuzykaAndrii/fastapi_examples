@@ -92,6 +92,7 @@ async def test_register_user(
         ("testuser1gmail.cpm", "testpassword", 401),
         ("", "testpassword", 422),
         ("testuser1@gmail.cpm", "", 422),
+        ("", "", 422),
     ],
 )
 async def test_login_user(
