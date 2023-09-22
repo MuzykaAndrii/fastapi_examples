@@ -22,7 +22,6 @@ class UserRead(BaseModel):
 
 
 class UserCreate(BaseModel):
-    # TODO: change deprecated @validator to @field_validator
     username: str = Field(min_length=4, max_length=20)
     email: EmailStr
     password: str = Field(min_length=8, max_length=30)
@@ -38,5 +37,5 @@ class UserCreate(BaseModel):
 
 
 class UserLogin(BaseModel):
-    username_or_email: str
-    password: str
+    username_or_email: str = Field(min_length=4, max_length=20)
+    password: str = Field(min_length=8, max_length=30)
