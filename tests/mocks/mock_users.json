@@ -1,17 +1,17 @@
 [
     {
         "username": "testuser1",
-        "email": "testuser1@gmail.cpm",
+        "email": "testuser1@gmail.com",
         "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He"
     },
     {
         "username": "testuser2",
-        "email": "testuser2@gmail.cpm",
+        "email": "testuser2@gmail.com",
         "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He"
     },
     {
         "username": "testuser3",
-        "email": "testuser3@gmail.cpm",
+        "email": "testuser3@gmail.com",
         "hashed_password": "$2b$12$j1LGyfOPFAtA2N1B1oL.IOOiA9RxJsqJ/5/9tL038R8lI8bM4a4He"
     }
 ]
