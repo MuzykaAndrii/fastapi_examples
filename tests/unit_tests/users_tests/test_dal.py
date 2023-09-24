@@ -1,7 +1,6 @@
-from datetime import datetime
-
 import pytest
 from sqlalchemy.exc import InvalidRequestError
+
 from src.users.dal import UserDAL
 from src.users.exceptions import EmailAlreadyInUseError, UsernameAlreadyInUseError
 
@@ -119,6 +118,7 @@ async def test_exists_by(filter_criteria, expected_result):
     [
         ({"email": "testuser1@gmail.com"}, None),
         ({"absent": "..."}, InvalidRequestError),
+        ({"": ""}, InvalidRequestError),
     ],
 )
 async def test_exists_by_with_exception(filter_criteria, expected_exception):
