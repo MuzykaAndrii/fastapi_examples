@@ -1,12 +1,28 @@
-from fastapi import HTTPException, Request, Response
-from starlette_admin.auth import AdminUser, AuthProvider
-from starlette_admin.exceptions import FormValidationError, LoginFailed
+from fastapi import (
+    HTTPException,
+    Request,
+    Response,
+)
 from pydantic import ValidationError
-from src.auth.auth import JwtManager
+from starlette_admin.auth import (
+    AdminUser,
+    AuthProvider,
+)
+from starlette_admin.exceptions import (
+    FormValidationError,
+    LoginFailed,
+)
 
-from src.auth.dependencies import get_current_superuser, get_current_user
+from src.auth.auth import JwtManager
+from src.auth.dependencies import (
+    get_current_superuser,
+    get_current_user,
+)
 from src.auth.services import authenticate_user
-from src.users.exceptions import UserInvalidPassword, UserNotFoundError
+from src.users.exceptions import (
+    UserInvalidPassword,
+    UserNotFoundError,
+)
 from src.users.schemas import UserLogin
 
 

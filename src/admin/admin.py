@@ -1,10 +1,10 @@
 from typing import Any
 
+import anyio.to_thread
 from fastapi import Request
-from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-import anyio.to_thread
+from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 
 
 class MyModelView(ModelView):

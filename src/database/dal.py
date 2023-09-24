@@ -1,4 +1,7 @@
-from typing import Any, Mapping
+from typing import (
+    Any,
+    Mapping,
+)
 
 from sqlalchemy import select
 

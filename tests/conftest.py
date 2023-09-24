@@ -1,19 +1,23 @@
-import json
-import pytest
 import asyncio
+import json
+
+import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy import insert
 
-from src.main import app as fastapi_app
 from src.config import settings
 from src.database.db import (
     Base,
     async_session_maker,
     engine,
 )
-from src.users.models import User, Role
+from src.main import app as fastapi_app
 from src.operations.models import Operation
+from src.users.models import (
+    Role,
+    User,
+)
 
 
 @pytest.fixture(autouse=True, scope="session")

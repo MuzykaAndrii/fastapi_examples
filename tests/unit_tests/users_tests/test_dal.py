@@ -2,7 +2,10 @@ import pytest
 from sqlalchemy.exc import InvalidRequestError
 
 from src.users.dal import UserDAL
-from src.users.exceptions import EmailAlreadyInUseError, UsernameAlreadyInUseError
+from src.users.exceptions import (
+    EmailAlreadyInUseError,
+    UsernameAlreadyInUseError,
+)
 
 
 @pytest.mark.parametrize(

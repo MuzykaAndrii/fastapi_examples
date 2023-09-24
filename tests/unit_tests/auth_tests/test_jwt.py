@@ -1,7 +1,9 @@
+from datetime import datetime
+
 import pytest
+
 from src.auth.auth import JwtManager
-from src.auth.exceptions import JwtNotValidError, JWTExpiredError
-from datetime import datetime, timedelta
+from src.auth.exceptions import JwtNotValidError
 
 
 # Parameterized sample data

@@ -1,10 +1,6 @@
-from src.auth.auth import (
-    PWDManager,
-)
+from src.auth.auth import PWDManager
 from src.users.dal import UserDAL
-from src.users.exceptions import (
-    UserRegisterError,
-)
+from src.users.exceptions import UserRegisterError
 from src.users.models import User
 from src.users.schemas import UserCreate
 

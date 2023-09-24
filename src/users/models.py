@@ -1,15 +1,15 @@
 from datetime import datetime
 
 from fastapi import Request
-from sqlalchemy.orm import relationship
 from sqlalchemy import (
+    TIMESTAMP,
+    Boolean,
     Column,
+    ForeignKey,
     Integer,
     String,
-    TIMESTAMP,
-    ForeignKey,
-    Boolean,
 )
+from sqlalchemy.orm import relationship
 
 from src.database.db import Base
 

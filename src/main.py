@@ -3,10 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.sessions import SessionMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from starlette.middleware.sessions import SessionMiddleware
 from starlette_admin.contrib.sqla import Admin
 
 from src.admin.auth import AdminAuthProvider
@@ -14,8 +14,11 @@ from src.config import settings
 from src.database.db import engine
 from src.operations.router import router as router_operation
 from src.tasks.router import router as router_tasks
+from src.users.admin.views import (
+    RoleAdminView,
+    UserAdminView,
+)
 from src.users.router import router as router_auth
-from src.users.admin.views import UserAdminView, RoleAdminView
 
 
 @asynccontextmanager

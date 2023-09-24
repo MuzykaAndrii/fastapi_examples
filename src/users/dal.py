@@ -1,16 +1,19 @@
 from sqlalchemy import (
-    select,
     or_,
+    select,
 )
 from sqlalchemy.exc import NoResultFound
 
-from src.users.exceptions import EmailAlreadyInUseError, UsernameAlreadyInUseError
+from src.database.dal import BaseDAL
+from src.database.db import async_session_maker
+from src.users.exceptions import (
+    EmailAlreadyInUseError,
+    UsernameAlreadyInUseError,
+)
 from src.users.models import (
     Role,
     User,
 )
-from src.database.db import async_session_maker
-from src.database.dal import BaseDAL
 
 
 class UserDAL(BaseDAL):

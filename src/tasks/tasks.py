@@ -2,6 +2,7 @@ import smtplib
 from email.message import EmailMessage
 
 from celery import Celery
+
 from src.config import settings
 
 # celery -A tasks.tasks:celery worker --loglevel=INFO

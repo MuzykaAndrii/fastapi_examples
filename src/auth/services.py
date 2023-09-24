@@ -1,8 +1,16 @@
 from fastapi import Response
 
-from src.auth.auth import AuthCookieManager, JwtManager, PWDManager
+from src.auth.auth import (
+    AuthCookieManager,
+    JwtManager,
+    PWDManager,
+)
 from src.users.dal import UserDAL
-from src.users.exceptions import UserInvalidPassword, UserLoginError, UserNotFoundError
+from src.users.exceptions import (
+    UserInvalidPassword,
+    UserLoginError,
+    UserNotFoundError,
+)
 from src.users.models import User
 from src.users.schemas import UserLogin
 

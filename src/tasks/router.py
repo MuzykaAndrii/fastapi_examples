@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import (
+    APIRouter,
+    Depends,
+)
 
-from src.tasks.tasks import send_letter
 from src.config import settings
-
+from src.tasks.tasks import send_letter
 
 router = APIRouter(
     prefix="/send",

@@ -4,20 +4,22 @@ from fastapi import (
     Response,
 )
 
+from src.auth.services import (
+    login_user,
+    logout_user,
+)
+from src.users.exceptions import (
+    EmailAlreadyInUseError,
+    UserInvalidPassword,
+    UsernameAlreadyInUseError,
+    UserNotFoundError,
+)
 from src.users.schemas import (
     UserCreate,
     UserLogin,
     UserRead,
 )
-from src.auth.services import login_user, logout_user
 from src.users.services import create_user
-from src.users.exceptions import (
-    EmailAlreadyInUseError,
-    UserInvalidPassword,
-    UserNotFoundError,
-    UsernameAlreadyInUseError,
-)
-
 
 router = APIRouter(
     prefix="/auth",

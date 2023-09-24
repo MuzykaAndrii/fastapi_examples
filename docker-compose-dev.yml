@@ -13,7 +13,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
-      start_period: 80s  
+      start_period: 80s
     volumes:
       - local_pgdata-only-db:/var/lib/postgresql/data
 
@@ -30,14 +30,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  
+
   redis:
     image: redis
     container_name: redis_container
     command: --port 5370
     ports:
       - 5370:5370
-  
+
   backend:
     build:
       context: .
@@ -46,7 +46,7 @@ services:
     command: ["docker/app.sh", "dev"]
     restart: always
     working_dir: /backend
-    ports: 
+    ports:
       - 8000:8000
     links:
       - db

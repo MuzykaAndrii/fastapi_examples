@@ -1,15 +1,17 @@
-from typing import AsyncGenerator
 import os
+from typing import AsyncGenerator
 
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     create_async_engine,
 )
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    sessionmaker,
+)
 
 from src.config import settings
-
 
 if settings.MODE == "TEST":
     engine = create_async_engine(settings.test_database_url, poolclass=NullPool)

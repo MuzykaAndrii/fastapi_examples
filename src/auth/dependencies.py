@@ -8,12 +8,12 @@ from src.auth.auth import (
     AuthCookieManager,
     JwtManager,
 )
-from src.users.dal import UserDAL
-from src.users.exceptions import UserNotAuthenticatedError
 from src.auth.exceptions import (
     JWTExpiredError,
     JwtNotValidError,
 )
+from src.users.dal import UserDAL
+from src.users.exceptions import UserNotAuthenticatedError
 from src.users.models import User
 
 

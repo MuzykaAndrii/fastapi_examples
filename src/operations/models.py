@@ -1,8 +1,8 @@
 from sqlalchemy import (
+    TIMESTAMP,
     Column,
     Integer,
     String,
-    TIMESTAMP,
 )
 
 from src.database.db import Base
