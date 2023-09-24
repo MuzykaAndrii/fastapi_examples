@@ -59,3 +59,36 @@ async def test_login_user(
     )
 
     assert response.status_code == response_status
+
+
+@pytest.mark.parametrize(
+    "username, email, password, repeat_password",
+    [
+        ("newuser", "newuser@gmail.com", "somepassword", "somepassword"),
+    ],
+)
+async def test_register_login_logout(
+    username, email, password, repeat_password, ac: AsyncClient
+):
+    register_response = await ac.post(
+        "/auth/register",
+        json={
+            "username": username,
+            "email": email,
+            "password": password,
+            "repeat_password": repeat_password,
+        },
+    )
+    assert register_response.status_code == 201
+
+    login_response = await ac.post(
+        "/auth/login",
+        json={
+            "username_or_email": username,
+            "password": password,
+        },
+    )
+    assert login_response.status_code == 200
+
+    logout_response = await ac.post("/auth/logout")
+    assert logout_response.status_code == 204
