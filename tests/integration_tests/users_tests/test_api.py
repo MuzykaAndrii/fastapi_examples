@@ -61,6 +61,11 @@ async def test_login_user(
     assert response.status_code == response_status
 
 
+async def test_logout_user(authenticated_ac: AsyncClient):
+    logout_response = await authenticated_ac.post("/auth/logout")
+    assert logout_response.status_code == 204
+
+
 @pytest.mark.parametrize(
     "username, email, password, repeat_password",
     [
