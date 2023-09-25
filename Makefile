@@ -1,7 +1,7 @@
-up-dev:
+up:
 	docker compose -f docker-compose-dev.yml up -d --build
 
-down-dev:
+down:
 	docker compose -f docker-compose-dev.yml down
 
 test:
