@@ -23,10 +23,4 @@ RUN poetry install --no-interaction
 
 COPY . ./
 
-RUN chmod a+x docker/*.sh
-
-# CMD poetry run alembic upgrade head
-
-# WORKDIR src
-
-# CMD poetry run gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000
+RUN chmod a+x scripts/*.sh

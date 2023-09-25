@@ -43,7 +43,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend
-    command: ["docker/app.sh", "dev"]
+    command: ["scripts/app.sh", "dev"]
     restart: always
     working_dir: /backend
     ports:
