@@ -1,8 +1,6 @@
 import asyncio
-import json
 
 import pytest
-from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy import insert
 
@@ -18,27 +16,30 @@ from src.users.models import (
     Role,
     User,
 )
+from tests import utils
 
 
 @pytest.fixture(autouse=True, scope="session")
 async def prepare_db():
     assert settings.MODE == "TEST"
 
-    def open_mock_json(model: str):
-        with open(f"tests/mocks/mock_{model}.json") as f:
-            return json.load(f)
-
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
+
+@pytest.fixture(autouse=True, scope="session")
+async def create_base_role(prepare_db):
     async with async_session_maker() as session:
         user_role = Role(name="user")
 
         session.add(user_role)
         await session.commit()
 
-    mock_users = open_mock_json("users")
+
+@pytest.fixture(autouse=True, scope="session")
+async def create_mock_users(create_base_role):
+    mock_users = utils.open_mock_json("users")
     async with async_session_maker() as session:
         res = insert(User).values(mock_users)
         await session.execute(res)
